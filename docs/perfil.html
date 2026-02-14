@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mi Perfil | VidaLink</title>
-  <link rel="icon" type="image/png" href="../RECURSOS/vidalink.png">
-  <link rel="stylesheet" href="../CSS/styles.css">
+  <link rel="icon" type="image/png" href="RECURSOS/vidalink.png">
+  <link rel="stylesheet" href="CSS/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -14,7 +14,7 @@
   <nav class="navbar bg-white navbar-compact shadow-sm">
     <div class="container-fluid px-4">
       <div class="d-flex align-items-center gap-2">
-        <img src="../RECURSOS/logo.png" alt="Logo" width="180" height="50">
+        <img src="RECURSOS/logo.png" alt="Logo" width="180" height="50">
       </div>
       <div class="ms-auto">
         <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-3" onclick="location.href='index.html'">
@@ -33,7 +33,7 @@
           
           <div class="card-body px-4 px-md-5 pb-5">
             <div class="profile-avatar-container">
-              <img src="../RECURSOS/usuario.png" id="avatarPreview" class="profile-avatar" alt="Avatar">
+              <img src="RECURSOS/usuario.png" id="avatarPreview" class="profile-avatar" alt="Avatar">
             </div>
 
             <div class="text-center mb-5">
@@ -41,7 +41,7 @@
               <p class="text-muted" id="emailDisplay">email@ejemplo.com</p>
               <div id="badgeVoluntario" style="display: none;">
                 <span class="volunteer-badge">
-                  <img src="../RECURSOS/conectado.png" width="14"> Voluntario Verificado
+                  <img src="RECURSOS/conectado.png" width="14"> Voluntario Verificado
                 </span>
               </div>
             </div>
@@ -68,7 +68,7 @@
                 <div class="col-md-12">
                   <label class="form-label-custom">Número de Celular</label>
                   <div class="input-group">
-                    <span class="input-group-text bg-light border-end-0 rounded-start-3"><img src="../RECURSOS/vidalink.png" width="20"></span>
+                    <span class="input-group-text bg-light border-end-0 rounded-start-3"><img src="RECURSOS/vidalink.png" width="20"></span>
                     <input type="tel" class="form-control input-profile rounded-start-0" id="celular" placeholder="300 000 0000" required>
                   </div>
                 </div>
@@ -118,10 +118,10 @@
   </main>
 
   <script type="module">
-  import { db } from '../SCRIPT/firebase-init.js';
-  import { protegerRutaPrivada, cerrarSesion } from '../SCRIPT/auth.js';
+  import { db } from './SCRIPT/firebase-init.js';
+  import { protegerRutaPrivada, cerrarSesion } from './SCRIPT/auth.js';
   import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
-  import { showCustomAlert } from '../SCRIPT/utils.js';
+  import { showCustomAlert } from './SCRIPT/utils.js';
 
   window.cerrarSesion = async () => {
     await cerrarSesion();

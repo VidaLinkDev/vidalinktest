@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Voluntario encontrado | VidaLink</title>
-  <link rel="icon" type="image/png" href="../RECURSOS/vidalink.png">
-  <link rel="stylesheet" href="../CSS/styles.css">
+  <link rel="icon" type="image/png" href="RECURSOS/vidalink.png">
+  <link rel="stylesheet" href="CSS/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -14,14 +14,14 @@
   <nav class="navbar bg-body-tertiary navbar-compact">
     <div class="container-fluid">
       <div class="d-flex align-items-center gap-2">
-        <img src="../RECURSOS/logo.png" alt="Logo" width="200" height="55">
+        <img src="RECURSOS/logo.png" alt="Logo" width="200" height="55">
       </div>
 
       <div class="d-flex align-items-center gap-3 ms-auto">
-        <img src="../RECURSOS/usuario.png" alt="Usuario" width="26" height="26">
+        <img src="RECURSOS/usuario.png" alt="Usuario" width="26" height="26">
 
         <button type="button" class="estado-conectado d-flex align-items-center gap-1">
-          <img src="../RECURSOS/conectado.png" alt="Conectado" width="14" height="14">
+          <img src="RECURSOS/conectado.png" alt="Conectado" width="14" height="14">
           Conectado
         </button>
 
@@ -30,7 +30,7 @@
         </button>
 
         <button type="button" class="btn btn-outline-danger btn-lg d-flex align-items-center gap-2" onclick="cerrarSesion()">
-          <img src="../RECURSOS/Exit.png" alt="Salir" width="24" height="24">
+          <img src="RECURSOS/Exit.png" alt="Salir" width="24" height="24">
           Salir
         </button>
       </div>
@@ -109,12 +109,12 @@
   </div>
 
   <!-- SONIDO DE NOTIFICACIÓN -->
-  <audio id="notificationSound" src="../RECURSOS/noti.wav" preload="auto"></audio>
+  <audio id="notificationSound" src="RECURSOS/noti.wav" preload="auto"></audio>
 
   <!-- SCRIPT PRINCIPAL -->
   <script type="module">
-    import { observarEstadoAuth, cerrarSesion } from '../SCRIPT/auth.js';
-    import { db } from '../SCRIPT/firebase-init.js';
+    import { observarEstadoAuth, cerrarSesion } from './SCRIPT/auth.js';
+    import { db } from './SCRIPT/firebase-init.js';
     import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -305,9 +305,9 @@
 
   <!-- SCRIPT DEL CHAT + NOTIFICACIÓN -->
   <script type="module">
-  import { db } from '../SCRIPT/firebase-init.js';
+  import { db } from './SCRIPT/firebase-init.js';
   import { collection, addDoc, onSnapshot, orderBy, query, serverTimestamp, doc, updateDoc, deleteField, deleteDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
-  import { showCustomAlert } from '../SCRIPT/utils.js';
+  import { showCustomAlert } from './SCRIPT/utils.js';
 
   let alertaIdActual = null;
   let unsubscribeChat = null;

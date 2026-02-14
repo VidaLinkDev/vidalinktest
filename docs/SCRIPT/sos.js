@@ -93,7 +93,7 @@ export function inicializarSOS() {
       sosButton.style.opacity = "1";
       sosButton.innerHTML = `
         <div class="sos-content">
-          <img src="../RECURSOS/emergencia.png" alt="Emergencia">
+          <img src="RECURSOS/emergencia.png" alt="Emergencia">
           <span class="sos-text">SOS</span>
         </div>
       `;
