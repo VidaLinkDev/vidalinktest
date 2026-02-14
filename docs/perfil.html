@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil | VidaLink</title>
+  <link rel="icon" type="image/png" href="../RECURSOS/vidalink.png">
+  <link rel="stylesheet" href="../CSS/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+  <nav class="navbar bg-white navbar-compact shadow-sm">
+    <div class="container-fluid px-4">
+      <div class="d-flex align-items-center gap-2">
+        <img src="../RECURSOS/logo.png" alt="Logo" width="180" height="50">
+      </div>
+      <div class="ms-auto">
+        <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-3" onclick="location.href='index.html'">
+          Volver al Inicio
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-9 col-xl-8">
+        
+        <div class="card card-profile">
+          <div class="profile-header-bg"></div>
+          
+          <div class="card-body px-4 px-md-5 pb-5">
+            <div class="profile-avatar-container">
+              <img src="../RECURSOS/usuario.png" id="avatarPreview" class="profile-avatar" alt="Avatar">
+            </div>
+
+            <div class="text-center mb-5">
+              <h2 class="fw-bold mb-1" id="nombreDisplay">Cargando...</h2>
+              <p class="text-muted" id="emailDisplay">email@ejemplo.com</p>
+              <div id="badgeVoluntario" style="display: none;">
+                <span class="volunteer-badge">
+                  <img src="../RECURSOS/conectado.png" width="14"> Voluntario Verificado
+                </span>
+              </div>
+            </div>
+
+            <form id="formPerfil">
+              <div class="section-title">Información Personal</div>
+              <div class="row g-4 mb-5">
+                <div class="col-md-6">
+                  <label class="form-label-custom">Primer Nombre</label>
+                  <input type="text" class="form-control input-profile" id="primerNombre" placeholder="Tu nombre" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label-custom">Segundo Nombre</label>
+                  <input type="text" class="form-control input-profile" id="segundoNombre" placeholder="Opcional">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label-custom">Primer Apellido</label>
+                  <input type="text" class="form-control input-profile" id="primerApellido" placeholder="Tu apellido" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label-custom">Segundo Apellido</label>
+                  <input type="text" class="form-control input-profile" id="segundoApellido" placeholder="Opcional">
+                </div>
+                <div class="col-md-12">
+                  <label class="form-label-custom">Número de Celular</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0 rounded-start-3"><img src="../RECURSOS/vidalink.png" width="20"></span>
+                    <input type="tel" class="form-control input-profile rounded-start-0" id="celular" placeholder="300 000 0000" required>
+                  </div>
+                </div>
+              </div>
+
+              <div class="section-title">Configuración de Voluntario</div>
+              <div class="card bg-light border-0 rounded-4 p-4 mb-4">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <div>
+                    <h6 class="fw-bold mb-1">Programa de Voluntariado</h6>
+                    <p class="small text-muted mb-0">Activa esta opción si deseas recibir alertas y ayudar en emergencias.</p>
+                  </div>
+                  <div class="form-check form-switch fs-4">
+                    <input class="form-check-input" type="checkbox" id="esVoluntario" role="switch">
+                  </div>
+                </div>
+
+                <div id="estadoVoluntarioSection" style="display: none;">
+                  <hr class="my-3">
+                  <label class="form-label-custom mb-3">Tu Disponibilidad Actual</label>
+                  <div class="d-grid gap-2">
+                    <button type="button" id="btnToggleEstado" class="btn btn-lg fw-bold rounded-3">
+                      Cargando estado...
+                    </button>
+                  </div>
+                  <p class="small text-center mt-2 text-muted">Haz clic para cambiar tu disponibilidad en tiempo real.</p>
+                </div>
+              </div>
+
+              <div class="d-grid mt-5">
+                <button type="submit" class="btn btn-danger btn-lg py-3 fw-bold rounded-pill shadow-sm">
+                  Guardar y Actualizar Perfil
+                </button>
+              </div>
+            </form>
+
+            <div class="text-center mt-4">
+              <button type="button" class="btn btn-link text-muted text-decoration-none small" onclick="cerrarSesion()">
+                Cerrar Sesión
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+  import { db } from '../SCRIPT/firebase-init.js';
+  import { protegerRutaPrivada, cerrarSesion } from '../SCRIPT/auth.js';
+  import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+  import { showCustomAlert } from '../SCRIPT/utils.js';
+
+  window.cerrarSesion = async () => {
+    await cerrarSesion();
+  };
+
+  protegerRutaPrivada(async (user) => {
+    const form = document.getElementById('formPerfil');
+    const usuarioRef = doc(db, "usuarios", user.uid);
+    const userDoc = await getDoc(usuarioRef);
+    const data = userDoc.exists() ? userDoc.data() : {};
+
+    // Inyectar datos en el formulario
+    document.getElementById('primerNombre').value = data.primerNombre || '';
+    document.getElementById('segundoNombre').value = data.segundoNombre || '';
+    document.getElementById('primerApellido').value = data.primerApellido || '';
+    document.getElementById('segundoApellido').value = data.segundoApellido || '';
+    document.getElementById('celular').value = data.celular || '';
+    document.getElementById('esVoluntario').checked = data.esVoluntario || false;
+    
+    // Inyectar datos en el display
+    document.getElementById('emailDisplay').textContent = user.email;
+    const nombreCompleto = [data.primerNombre, data.primerApellido].filter(Boolean).join(' ') || 'Usuario VidaLink';
+    document.getElementById('nombreDisplay').textContent = nombreCompleto;
+
+    // Manejo de UI de Voluntario
+    const section = document.getElementById('estadoVoluntarioSection');
+    const badge = document.getElementById('badgeVoluntario');
+    const toggleBtn = document.getElementById('btnToggleEstado');
+    
+    let estadoVoluntario = data.estadoVoluntario || 'disponible';
+
+    function actualizarBotonEstado() {
+      if (estadoVoluntario === 'disponible') {
+        toggleBtn.className = 'btn btn-success btn-lg fw-bold rounded-3';
+        toggleBtn.textContent = '● ESTOY DISPONIBLE';
+      } else if (estadoVoluntario === 'ocupado') {
+        toggleBtn.className = 'btn btn-warning btn-lg fw-bold rounded-3 text-white';
+        toggleBtn.textContent = '● ESTOY OCUPADO';
+      } else {
+        toggleBtn.className = 'btn btn-secondary btn-lg fw-bold rounded-3';
+        toggleBtn.textContent = '○ NO DISPONIBLE';
+      }
+    }
+
+    if (data.esVoluntario) {
+      section.style.display = 'block';
+      badge.style.display = 'block';
+      actualizarBotonEstado();
+    }
+
+    document.getElementById('esVoluntario').onchange = (e) => {
+      section.style.display = e.target.checked ? 'block' : 'none';
+      badge.style.display = e.target.checked ? 'block' : 'none';
+      if (e.target.checked) actualizarBotonEstado();
+    };
+
+    toggleBtn.onclick = async () => {
+      estadoVoluntario = estadoVoluntario === 'disponible' ? 'no_disponible' : 'disponible';
+      actualizarBotonEstado();
+      await updateDoc(usuarioRef, { estadoVoluntario });
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const btnSubmit = form.querySelector('button[type="submit"]');
+      btnSubmit.disabled = true;
+      btnSubmit.textContent = 'Guardando cambios...';
+
+      const datos = {
+        primerNombre: document.getElementById('primerNombre').value.trim(),
+        segundoNombre: document.getElementById('segundoNombre').value.trim() || null,
+        primerApellido: document.getElementById('primerApellido').value.trim(),
+        segundoApellido: document.getElementById('segundoApellido').value.trim() || null,
+        celular: document.getElementById('celular').value.trim(),
+        esVoluntario: document.getElementById('esVoluntario').checked
+      };
+
+      try {
+        await updateDoc(usuarioRef, datos);
+        showCustomAlert('¡Excelente!', 'Perfil actualizado correctamente');
+        setTimeout(() => location.href = 'index.html', 2000);
+      } catch (err) {
+        console.error(err);
+        showCustomAlert('Error', 'No se pudieron guardar los cambios');
+      } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'Guardar y Actualizar Perfil';
+      }
+    });
+  });
+</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+  <footer class="site-footer">
+    <p>VidaLink: Juntos salvamos vidas.</p>
+    <p>&copy; 2025 VidaLink. Colombia.</p>
+  </footer>
+</body>
+</html>
